@@ -10,7 +10,7 @@ const Header = () => {
    {
     setTimeout(() => {
       setIsCoursesOpen(false);
-    }, 6000);
+    }, 3000);
    }
 
   return (

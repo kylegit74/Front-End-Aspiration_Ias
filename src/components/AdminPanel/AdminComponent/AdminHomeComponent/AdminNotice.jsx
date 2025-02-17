@@ -5,6 +5,7 @@ import Dialog from "./AdminDialog";
 import AddNotice from "../../../../Services/Notice/AddNotice";
 import DeleteNotice from "../../../../Services/Notice/DeleteNotice";
 import EditNotice from "../../../../Services/Notice/EditNotice";
+import Loading from "../../../Loader";
 
 function AdminNotice() {
   const [Notices, SetNotices] = useState([]);
@@ -17,21 +18,31 @@ function AdminNotice() {
   async function FetchNotices() {
     try {
       const res = await FetchallNotice();
+      const sortedNotices = [...res].sort((a, b) => {
+        const DateA = new Date(a.updatedAt);
+        const DateB = new Date(b.updatedAt);
+        
+        if (DateA - DateB === 0) {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        }
+        return DateB - DateA;
+      });
+      
       let initial = {};
-      res?.map((notice, index) => {
+      sortedNotices.forEach((notice, index) => {
         initial[index] = notice.text;
       });
+      
       setValues(initial);
-      SetNotices(res);
+      SetNotices(sortedNotices);
     } catch (error) {
-      console.log("error", error);
+      console.log("Error fetching notices:", error);
     }
   }
+  
   async function handleAdd() {
-    console.log("text", NewTextToAdd);
     try {
-      const res = await AddNotice(NewTextToAdd);
-      console.log("res", res);
+      await AddNotice(NewTextToAdd);
       FetchNotices();
       SetNewTextToAdd();
       setIsAddDialogOpen(false);
@@ -39,10 +50,11 @@ function AdminNotice() {
       console.log("error", error);
     }
   }
+
   async function handleDelete(id) {
     if (!window.confirm("Are you sure you want to delete this notice?")) return;
     try {
-      const res = await DeleteNotice(id);
+      await DeleteNotice(id);
       FetchNotices();
     } catch (error) {
       console.log("error", error);
@@ -57,36 +69,33 @@ function AdminNotice() {
     }));
     setEditIndex(index);
   }
-  async function handleSave(id,index )
-  {
-    try{
-      const res=await EditNotice(id, Values[index]);
-      console.log('res',res);
-      FetchNotices();
-        
-    }catch(error)
-    {
-      console.log('error',error);
-    }
 
+  async function handleSave(id, index) {
+    try {
+      await EditNotice(id, Values[index]);
+      FetchNotices();
+    } catch (error) {
+      console.log('error', error);
+    }
   }
-  async function handleEdit(id) {}
+
   useEffect(() => {
     FetchNotices();
   }, []);
 
   return (
-    <>
-      <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-100">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">
-            Notice Management
-          </h2>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-6">
+      <div className="max-w-9xl mx-auto bg-white p-8 rounded-2xl border border-gray-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Notice Management</h2>
+            <p className="text-gray-600 mt-2">Manage and publish important notices</p>
+          </div>
           <button
             onClick={() => setIsAddDialogOpen(true)}
-            className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors w-full sm:w-auto"
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-8 py-3 rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 w-full sm:w-auto"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-5 h-5" />
             Add Notice
           </button>
         </div>
@@ -95,30 +104,34 @@ function AdminNotice() {
           {Notices?.map((notice, index) => (
             <div
               key={index}
-              className="group relative flex flex-col sm:flex-row items-start gap-4 p-4 border rounded-lg hover:border-indigo-200 transition-colors"
+              className="group relative flex flex-col sm:flex-row items-start gap-4 p-6 border rounded-xl hover:border-indigo-200 bg-white shadow-sm hover:shadow-md transition-all duration-200"
             >
-              <MessageSquare className="w-5 h-5 text-indigo-600 mt-1 hidden sm:block" />
+              <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center hidden sm:flex">
+                <MessageSquare className="w-5 h-5 text-indigo-600" />
+              </div>
               <div className="flex-1 w-full sm:w-auto">
                 <input
                   type="text"
                   value={Values[index]}
                   onChange={(e) => handleValueChange(e, index)}
-                  className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition-all"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition-all duration-200"
                 />
               </div>
-              <div className="flex items-center gap-2 w-full sm:w-auto justify-end mt-4 sm:mt-0">
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
                 <button
-                  className="p-2 hover:bg-indigo-50 rounded-md transition-colors"
-                 
+                  className="p-2 hover:bg-indigo-50 rounded-lg transition-colors"
                 >
-                  {isEdit && index === EditIndex && Values[index]!==notice.text ? (
-                    <Save className="w-5 h-5 text-green-600" onClick={(e)=>handleSave(notice._id,index)} />
+                  {isEdit && index === EditIndex && Values[index] !== notice.text ? (
+                    <Save 
+                      className="w-5 h-5 text-green-600" 
+                      onClick={() => handleSave(notice._id, index)} 
+                    />
                   ) : (
                     <Edit2 className="w-5 h-5 text-indigo-600" />
                   )}
                 </button>
                 <button
-                  className="p-2 hover:bg-red-50 rounded-md transition-colors"
+                  className="p-2 hover:bg-red-50 rounded-lg transition-colors"
                   onClick={() => handleDelete(notice._id)}
                 >
                   <Trash2 className="w-5 h-5 text-red-500" />
@@ -134,23 +147,23 @@ function AdminNotice() {
         onClose={() => setIsAddDialogOpen(false)}
         title="Add New Notice"
       >
-        <div className="space-y-4">
+        <div className="space-y-6">
           <textarea
             placeholder="Enter notice text..."
             value={NewTextToAdd}
             onChange={(e) => SetNewTextToAdd(e.target.value)}
             rows={4}
-            className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none resize-none"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition-all duration-200 resize-none"
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-3">
             <button
               onClick={() => setIsAddDialogOpen(false)}
-              className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+              className="px-6 py-2.5 text-gray-700 font-medium hover:bg-gray-50 rounded-lg transition-colors"
             >
               Cancel
             </button>
             <button
-              className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+              className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover: shadow-lg transform hover:-translate-y-0.5"
               onClick={() => handleAdd()}
             >
               Add Notice
@@ -158,7 +171,7 @@ function AdminNotice() {
           </div>
         </div>
       </Dialog>
-    </>
+    </div>
   );
 }
 

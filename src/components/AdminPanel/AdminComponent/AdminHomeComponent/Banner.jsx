@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
-import { Image, Plus, Trash2, Edit2, X, Upload } from "lucide-react";
+import { Image, Plus, Trash2, Edit2, X, Upload, Link as LinkIcon } from "lucide-react";
 import FetchAllBanner from "../../../../Services/Banner/FetchAllBanner";
 import EditBanner from "../../../../Services/Banner/EditBanner";
 import DeleteBanner from "../../../../Services/Banner/DeleteBanner";
 import AddBanner from "../../../../Services/Banner/AddBanner";
 
 function AdminBanner() {
-  const [Banners, SetBanners] = useState([]);
+  const [banners, setBanners] = useState([]);
   const [previews, setPreviews] = useState({});
-  const [isEdit, setisEdit] = useState();
-  const [editIndex, seteditIndex] = useState();
-  const [issaving, setisSaving] = useState(false);
+  const [issaving, setIsSaving] = useState(false);
   const [file, setFile] = useState();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const[Link, setBannerLink]=useState();
-  
+  const [editingImage, setEditingImage] = useState(null);
+  const [isLinkEdit, setIsLinkEdit] = useState(false);
+  const [isLinkEditIndex, setIsLinkEditIndex] = useState();
+  const [Link, setLink] = useState();
+  const [IsLinkSaving, SetIsLinkSaving] = useState(false);
 
-  async function FetchAdminBanners() {
+  async function fetchAdminBanners() {
     try {
       const res = await FetchAllBanner();
       if (Array.isArray(res)) {
-        SetBanners(res);
+        setBanners(res);
         const initialPreviews = {};
         res.forEach((banner, index) => {
           if (banner.image) {
@@ -32,7 +33,7 @@ function AdminBanner() {
       }
     } catch (error) {
       console.error("Error fetching banners:", error);
-      SetBanners([]);
+      setBanners([]);
     }
   }
 
@@ -42,6 +43,7 @@ function AdminBanner() {
     if (file) {
       const fileURL = URL.createObjectURL(file);
       setPreviews((prev) => ({ ...prev, [index]: fileURL }));
+      setEditingImage(index);
     }
   };
 
@@ -64,26 +66,22 @@ function AdminBanner() {
     }
   };
 
-  function handleEdit(index) {
-    console.log("edited", index);
-    setisEdit(true);
-    seteditIndex(index);
-  }
-
-  async function HanldeEditSubmit(e, id) {
-    e.preventDefault();
-    const formdata = new FormData();
-    formdata.append("image", file);
-    setisSaving(true);
+  async function handleImageUpdate(bannerId) {
+    if (!file) return;
+    
+    setIsSaving(true);
+    const formData = new FormData();
+    formData.append("image", file);
+    
     try {
-      const res = await EditBanner(formdata, id);
-      FetchAdminBanners();
-      setisEdit(false);
-      console.log("res");
-      setisSaving(false);
+      await EditBanner(formData, bannerId);
+      await fetchAdminBanners();
+      setEditingImage(null);
+      setFile(null);
     } catch (error) {
-      console.log("error", error);
-      setisSaving(false);
+      console.error("Error updating image:", error);
+    } finally {
+      setIsSaving(false);
     }
   }
 
@@ -93,7 +91,7 @@ function AdminBanner() {
 
     try {
       await DeleteBanner(id);
-      FetchAdminBanners()
+      await fetchAdminBanners();
     } catch (error) {
       console.error("Error deleting banner:", error);
     }
@@ -107,161 +105,233 @@ function AdminBanner() {
 
     const formData = new FormData();
     formData.append("image", file);
-    setisSaving(true);
+    setIsSaving(true);
 
     try {
       await AddBanner(formData);
-      FetchAdminBanners();
+      await fetchAdminBanners();
       setIsDialogOpen(false);
       setFile(null);
     } catch (error) {
       console.error("Error uploading banner:", error);
     } finally {
-      setisSaving(false);
+      setIsSaving(false);
     }
   };
-  function handleDialogClose()
-  {
-    setIsDialogOpen(false);
-    setFile(null);
+
+  function handleEditLink(index, link) {
+    setIsLinkEdit(!isLinkEdit);
+    setIsLinkEditIndex(index);
+    setLink(link);
+  }
+
+  async function handleSaveLink(e, id) {
+    e.preventDefault();
+    try {
+      SetIsLinkSaving(true);
+      const formdata = new FormData();
+      formdata.append('image', File);
+      formdata.append('link', Link);
+      const res = await EditBanner(formdata, id);
+      console.log('res', res);
+      SetIsLinkSaving(false);
+      setIsLinkEdit(false);
+      fetchAdminBanners();
+    } catch (error) {
+      console.log('error', error);
+      SetIsLinkSaving(false);
+    }
   }
 
   useEffect(() => {
-    FetchAdminBanners();
+    fetchAdminBanners();
   }, []);
 
   return (
-    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-100">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <h2 className="text-xl font-semibold text-gray-800">Banner Management</h2>
-        <button
-          className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors w-full sm:w-auto"
-          onClick={() => setIsDialogOpen(true)}
-        >
-          <Plus className="w-4 h-4" />
-          Add Banner
-        </button>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-6">
+      <div className="max-w-8xl mx-auto bg-white p-8 rounded-2xl  border border-gray-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Banner Management</h2>
+            <p className="text-gray-600 mt-2">Manage your website banners and their links</p>
+          </div>
+          <button
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-8 py-3 rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 w-full sm:w-auto"
+            onClick={() => setIsDialogOpen(true)}
+          >
+            <Plus className="w-5 h-5" />
+            Add Banner
+          </button>
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        {Banners?.map((banner, index) => (
-          <div key={index} className="group">
-            <div className="border rounded-lg overflow-hidden bg-gray-50">
-            {/* <input type="text" vlaue={banner?.link} onChange={(e)=>setBannerLink(e.target.value)} className="px-2 "/> */}
-              <div className="relative aspect-video">
-                {previews[index] ? (
-                  <img
-                    src={previews[index]}
-                    alt="Banner Preview"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Image className="w-8 h-8 text-gray-400" />
-                  </div>
-                )}
-             
-                <div className="absolute inset-0 bg-black/50 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                  <label className="w-10 h-10 rounded-full bg-white flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors">
-                    <input
-                      type="file"
-                      onChange={(e) => handleFileChange(e, index)}
-                      className="hidden"
-                      accept="image/*"
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {banners?.map((banner, index) => (
+            <div key={index} className="group transform hover:-translate-y-1 transition-all duration-200">
+              <div className="border rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-200">
+                <div className="relative aspect-video">
+                  {previews[index] ? (
+                    <img
+                      src={previews[index]}
+                      alt="Banner Preview"
+                      className="w-full h-full object-cover"
                     />
-                    <Edit2
-                      className="w-5 h-5 text-gray-600"
-                      onClick={(e) => handleEdit(index)}
-                    />
-                  </label>
-                  {isEdit && index == editIndex ? (
-                    <button
-                      className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition-transform transform hover:scale-105"
-                      onClick={(e) => HanldeEditSubmit(e, banner._id)}
-                    >
-                      {issaving ? "Saving" : "save"}
-                    </button>
                   ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+                      <Image className="w-16 h-16 text-gray-400" />
+                    </div>
+                  )}
+                
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-4">
+                    <label className="w-12 h-12 rounded-full bg-white/95 flex items-center justify-center cursor-pointer hover:bg-white transition-colors duration-200 shadow-lg transform hover:scale-105">
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileChange(e, index)}
+                        className="hidden"
+                        accept="image/*"
+                      />
+                      <Edit2 className="w-5 h-5 text-gray-700" />
+                    </label>
                     <button
-                      className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md border border-gray-300 hover:bg-red-100 hover:shadow-lg transition-all duration-300 transform hover:scale-110 hover:ring-2 hover:ring-red-300"
+                      className="w-12 h-12 rounded-full bg-white/95 flex items-center justify-center shadow-lg hover:bg-white transition-colors duration-200 transform hover:scale-105"
                       onClick={(e) => handleDelete(e, banner._id)}
                     >
-                      <Trash2 className="w-6 h-6 text-red-500" />
+                      <Trash2 className="w-5 h-5 text-red-500" />
                     </button>
-                  )}
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
 
-      {isDialogOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 relative animate-fadeIn">
-            <div className="p-6">
-              <button
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-                onClick={() => handleDialogClose(false)}
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Add New Banner</h3>
-              
-              <div
-                className={`border-2 border-dashed rounded-lg p-8 transition-colors ${
-                  isDragging ? 'border-indigo-500 bg-indigo-50' : 'border-gray-300 hover:border-gray-400'
-                }`}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-              >
-                <div className="text-center">
-                  <Upload className="w-10 h-10 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 mb-2">Drag and drop your image here, or</p>
-                  <label className="inline-block">
-                    <input
-                      type="file"
-                      onChange={(e) => setFile(e.target.files[0])}
-                      className="hidden"
-                      accept="image/*"
+                <div className="p-6">
+                  <div className="flex items-center justify-between gap-3 mb-2">
+                    <div className="flex items-center gap-2">
+                      <LinkIcon className="w-5 h-5 text-indigo-500" />
+                      <span className="text-sm font-semibold text-gray-700">Banner Link</span>
+                    </div>
+                    
+                    {isLinkEdit && isLinkEditIndex === index ? (
+                      <button 
+                        className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white text-sm font-medium rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5" 
+                        onClick={(e) => handleSaveLink(e, banner._id)}
+                      >
+                        {IsLinkSaving ? 'Saving...' : 'Save'}
+                      </button>
+                    ) : (
+                      <button
+                        className="p-2 rounded-lg hover:bg-gray-50 text-gray-400 hover:text-indigo-600 transition-all duration-200"
+                        onClick={() => handleEditLink(index, banner.link)}
+                      >
+                        <Edit2 className="w-5 h-5" />
+                      </button>
+                    )}
+                  </div>
+                  
+                  {isLinkEdit && isLinkEditIndex === index ? (
+                    <input 
+                      type="text" 
+                      value={Link} 
+                      onChange={(e) => setLink(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition-all duration-200"
+                      placeholder="Enter banner link..."
                     />
-                    <span className="text-indigo-600 hover:text-indigo-700 cursor-pointer">browse files</span>
-                  </label>
+                  ) : (
+                    <div className="text-sm text-gray-600 truncate">
+                      {banner.link || "No link set"}
+                    </div>
+                  )}
+
+                  {editingImage === index && (
+                    <div className="mt-4 flex justify-end">
+                      <button
+                        onClick={() => handleImageUpdate(banner._id)}
+                        disabled={issaving}
+                        className="px-6 py-2 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white text-sm font-medium rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      >
+                        {issaving ? "Saving..." : "Save Image"}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
+            </div>
+          ))}
+        </div>
 
-              {file && (
-                <div className="mt-4 p-3 bg-gray-50 rounded-lg flex items-center gap-3">
-                  <Image className="w-5 h-5 text-gray-500" />
-                  <span className="text-sm text-gray-600 truncate">{file.name}</span>
-                </div>
-              )}
-
-              <div className="mt-6">
+        {/* Upload Dialog */}
+        {isDialogOpen && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 relative animate-fadeIn">
+              <div className="p-8">
                 <button
-                  onClick={handleUpload}
-                  disabled={issaving || !file}
-                  className={`w-full py-2.5 rounded-lg text-white font-medium transition-all duration-200 ${
-                    issaving || !file
-                      ? 'bg-gray-300 cursor-not-allowed'
-                      : 'bg-indigo-600 hover:bg-indigo-700 shadow-sm hover:shadow-md'
-                  }`}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                  onClick={() => {
+                    setIsDialogOpen(false);
+                    setFile(null);
+                  }}
                 >
-                  {issaving ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Uploading...
-                    </span>
-                  ) : (
-                    'Upload Banner'
-                  )}
+                  <X className="w-6 h-6" />
                 </button>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Add New Banner</h3>
+                
+                <div
+                  className={`border-3 border-dashed rounded-xl p-10 transition-all duration-200 ${
+                    isDragging ? 'border-indigo-500 bg-indigo-50' : 'border-gray-300 hover:border-indigo-300'
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <div className="text-center">
+                    <Upload className="w-16 h-16 text-indigo-500 mx-auto mb-4" />
+                    <p className="text-gray-600 mb-3">Drag and drop your image here, or</p>
+                    <label className="inline-block">
+                      <input
+                        type="file"
+                        onChange={(e) => setFile(e.target.files[0])}
+                        className="hidden"
+                        accept="image/*"
+                      />
+                      <span className="text-indigo-600 hover:text-indigo-700 font-medium cursor-pointer">browse files</span>
+                    </label>
+                  </div>
+                </div>
+
+                {file && (
+                  <div className="mt-6 p-4 bg-gray-50 rounded-xl flex items-center gap-3">
+                    <Image className="w-6 h-6 text-indigo-500" />
+                    <span className="text-sm text-gray-600 truncate flex-1">{file.name}</span>
+                    <button
+                      onClick={() => setFile(null)}
+                      className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+                    >
+                      <X className="w-5 h-5 text-gray-500" />
+                    </button>
+                  </div>
+                )}
+
+                <div className="mt-8">
+                  <button
+                    onClick={handleUpload}
+                    disabled={issaving || !file}
+                    className={`w-full py-3 rounded-xl text-white font-medium transition-all duration-300 ${
+                      issaving || !file
+                        ? 'bg-gray-300 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 shadow-md hover:shadow-xl transform hover:-translate-y-0.5'
+                    }`}
+                  >
+                    {issaving ? (
+                      <span className="flex items-center justify-center gap-3">
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Uploading...
+                      </span>
+                    ) : (
+                      'Upload Banner'
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

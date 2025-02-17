@@ -20,8 +20,20 @@ const NoticeBoard = () => {
       console.log('error',error);
     }
   }
-  const SortedNotices = Notices.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
-  console.log('sort',SortedNotices);
+  const SortedNotices = [...Notices].sort((a, b) => {
+    const dateA = new Date(a.updatedAt);
+    const dateB = new Date(b.updatedAt);
+
+    // If updatedAt is the same, sort by createdAt
+    if (dateA - dateB === 0) {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+    }
+
+    return dateB - dateA;
+});
+
+console.log('Sorted Notices:', SortedNotices);
+
   
   useEffect(()=>{
     fetchnotices()
@@ -49,7 +61,7 @@ const NoticeBoard = () => {
             <div className='px-4'>
                 {/* <p className="text-lg font-bold mb-4">Results Declared :  </p> */}
                 <ul className="list-disc pl-5 space-y-4 text-lg mb-5">
-                  {SortedNotices.slice(1,6)?.map((notice, index )=>(
+                  {SortedNotices.slice(0,6)?.map((notice, index )=>(
                     <li key={index}>{notice.text}</li>
                   ))}
                 </ul>
