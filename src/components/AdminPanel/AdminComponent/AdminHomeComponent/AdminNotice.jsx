@@ -6,6 +6,7 @@ import AddNotice from "../../../../Services/Notice/AddNotice";
 import DeleteNotice from "../../../../Services/Notice/DeleteNotice";
 import EditNotice from "../../../../Services/Notice/EditNotice";
 import Loading from "../../../Loader";
+import Spinner from "../../../Spinner";
 
 function AdminNotice() {
   const [Notices, SetNotices] = useState([]);
@@ -14,9 +15,11 @@ function AdminNotice() {
   const [isEdit, setisEdit] = useState(false);
   const [Values, setValues] = useState({});
   const [EditIndex, setEditIndex] = useState();
+  const [IsLoading, setIsLoading]=useState(false)
 
   async function FetchNotices() {
     try {
+      setIsLoading(true)
       const res = await FetchallNotice();
       const sortedNotices = [...res].sort((a, b) => {
         const DateA = new Date(a.updatedAt);
@@ -27,6 +30,7 @@ function AdminNotice() {
         }
         return DateB - DateA;
       });
+      setIsLoading(false)
       
       let initial = {};
       sortedNotices.forEach((notice, index) => {
@@ -37,6 +41,7 @@ function AdminNotice() {
       SetNotices(sortedNotices);
     } catch (error) {
       console.log("Error fetching notices:", error);
+      setIsLoading(false)
     }
   }
   
@@ -99,8 +104,7 @@ function AdminNotice() {
             Add Notice
           </button>
         </div>
-
-        <div className="space-y-4">
+{IsLoading? <Spinner/>:   <div className="space-y-4">
           {Notices?.map((notice, index) => (
             <div
               key={index}
@@ -139,7 +143,8 @@ function AdminNotice() {
               </div>
             </div>
           ))}
-        </div>
+        </div>}
+      
       </div>
 
       <Dialog

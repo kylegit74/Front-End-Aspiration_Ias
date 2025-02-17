@@ -8,6 +8,7 @@ import AdminRoute from './components/AdminPanel/Layouts/AdminRoute';
 import Login from './components/Login/Login';
 
 import SkeletonLoader from './components/Loader';
+import ScrollToTop from './layouts/ScrollTop';
 const Home=lazy(()=>import('../src/pages/Home'));
 const AboutUs=lazy(()=>import('../src/pages/About'));
 const ContactPage=lazy(()=>import('../src/pages/Contact'));
@@ -18,7 +19,9 @@ function App() {
     <BrowserRouter>
      
         <Suspense fallback={<SkeletonLoader/>}>
+        <ScrollToTop/>
         <Routes>
+      
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<AboutUs />} />
         <Route path='/contact' element={<ContactPage/>}/>

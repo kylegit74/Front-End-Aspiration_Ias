@@ -4,6 +4,7 @@ import FetchAllBanner from "../../../../Services/Banner/FetchAllBanner";
 import EditBanner from "../../../../Services/Banner/EditBanner";
 import DeleteBanner from "../../../../Services/Banner/DeleteBanner";
 import AddBanner from "../../../../Services/Banner/AddBanner";
+import Spinner from "../../../Spinner";
 
 function AdminBanner() {
   const [banners, setBanners] = useState([]);
@@ -17,9 +18,11 @@ function AdminBanner() {
   const [isLinkEditIndex, setIsLinkEditIndex] = useState();
   const [Link, setLink] = useState();
   const [IsLinkSaving, SetIsLinkSaving] = useState(false);
+  const [Loading, setIsLoading]=useState(false)
 
   async function fetchAdminBanners() {
     try {
+      setIsLoading(true)
       const res = await FetchAllBanner();
       if (Array.isArray(res)) {
         setBanners(res);
@@ -31,9 +34,11 @@ function AdminBanner() {
         });
         setPreviews(initialPreviews);
       }
+      setIsLoading(false)
     } catch (error) {
       console.error("Error fetching banners:", error);
       setBanners([]);
+      setIsLoading(false)
     }
   }
 
@@ -164,7 +169,7 @@ function AdminBanner() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+{Loading? <Spinner/> :    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {banners?.map((banner, index) => (
             <div key={index} className="group transform hover:-translate-y-1 transition-all duration-200">
               <div className="border rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-200">
@@ -253,7 +258,8 @@ function AdminBanner() {
               </div>
             </div>
           ))}
-        </div>
+        </div>}
+     
 
         {/* Upload Dialog */}
         {isDialogOpen && (

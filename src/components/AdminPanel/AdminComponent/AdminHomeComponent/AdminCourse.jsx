@@ -4,6 +4,7 @@ import FetchAllCourses from "../../../../Services/Course/FetchAllCourse";
 import DeleteCourse from "../../../../Services/Course/DeleteCourse";
 import AddCourse from "../../../../Services/Course/AddCourse";
 import UpdateCourse from "../../../../Services/Course/UpdateCourse";
+import Spinner from "../../../Spinner";
 
 function AdminCourse() {
   const [Courses, SetCourses] = useState([]);
@@ -24,9 +25,11 @@ function AdminCourse() {
     Explore_Courses: ['']
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [IsLoading, setIsLoading]=useState(false)
 
   async function FetchCourses() {
     try {
+      setIsLoading(true)
       const res = await FetchAllCourses();
       SetCourses(res);
       let initialPreviews = {};
@@ -44,8 +47,10 @@ function AdminCourse() {
         })
       });
       SetPreviews(initialPreviews);
+      setIsLoading(false)
     } catch (error) {
       console.log('error', error);
+      setIsLoading(false)
     }
   }
 
@@ -242,8 +247,7 @@ function AdminCourse() {
           Add Course
         </button>
       </div>
-
-      <div className="space-y-4">
+{IsLoading? <Spinner/>:   <div className="space-y-4">
         {Courses?.map((course, index) => {
           const isEditing = editingCourse?._id === course._id;
           return (
@@ -391,7 +395,8 @@ function AdminCourse() {
             </div>
           );
         })}
-      </div>
+      </div>}
+    
 
       {/* Add Course Modal */}
       {isDialogOpen && (

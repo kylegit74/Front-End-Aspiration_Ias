@@ -6,9 +6,7 @@ import logo from '../../../Imagesall/logo.png';
 function AdminSidebar() {
   const menuItems = [
     { icon: Home, label: "Home", href: "/admin/home" },
-    { icon: BookOpen, label: "Inspiration", href: "/admin/inspiration" },
-    { icon: Info, label: "About", href: "/admin/about" },
-    { icon: MessageCircle, label: "Contact", href: "/admin/contact" },
+
    
   ];
 
@@ -43,7 +41,7 @@ function AdminSidebar() {
       </nav>
 
       {/* Logout Button */}
-      <div className="border-t border-white/20 pt-6 mt-8">
+      <div className="border-t border-white/20 pt-6 mt-[300px]">
         <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-700 transition-colors duration-200 w-full text-red-300 hover:text-white">
           <LogOut className="w-5 h-5" />
           <span className="font-medium">Logout</span>

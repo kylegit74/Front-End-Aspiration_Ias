@@ -71,7 +71,7 @@ const Footer = () => {
             <h4 className='font-medium text-lg mb-3'>Popular Menus</h4>
             <ul className='text-sm'>
               <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> Home</Link>
+                <Link to={'/'}> <BiCaretRight className='inline-block mr-2' /> Home</Link>
               </li>
               <li className="mb-3">
                 <Link> <BiCaretRight className='inline-block mr-2' /> Courses</Link>
@@ -80,16 +80,16 @@ const Footer = () => {
                 <Link>  <BiCaretRight className='inline-block mr-2' />Target exams</Link>
               </li>
               <li className="mb-3">
-                <Link>  <BiCaretRight className='inline-block mr-2' />Why choose us</Link>
+                <Link to={'/whychooseus'}>  <BiCaretRight className='inline-block mr-2' />Why choose us</Link>
               </li>
               <li className="mb-3">
                 <Link>  <BiCaretRight className='inline-block mr-2' />Career</Link>
               </li>
               <li className="mb-3">
-                <Link>  <BiCaretRight className='inline-block mr-2' />About</Link>
+                <Link to={'/about'}>  <BiCaretRight className='inline-block mr-2' />About</Link>
               </li>
               <li className="mb-3">
-                <Link>  <BiCaretRight className='inline-block mr-2' />Contact</Link>
+                <Link to={'/contact'}>  <BiCaretRight className='inline-block mr-2' />Contact</Link>
               </li>
             </ul>
           </div>

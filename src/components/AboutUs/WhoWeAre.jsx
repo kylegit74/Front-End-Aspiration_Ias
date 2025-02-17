@@ -1,4 +1,5 @@
 import { GraduationCap, School } from "lucide-react";
+import students from '../../Imagesall/students.jpg'
 
 const WhoWeAre = () => {
   return (
@@ -58,9 +59,9 @@ const WhoWeAre = () => {
           <div className="flex-1 mt-[-38px]">
             <div className="overflow-hidden rounded-2xl shadow-2xl transition-all hover:shadow-3xl">
               <img
-                src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80"
+                src={students}
                 alt="Students studying"
-                className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                className="h-full w-full object-fit transition-transform duration-500 hover:scale-105"
               />
             </div>
           </div>
