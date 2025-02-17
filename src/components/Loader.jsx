@@ -1,22 +1,24 @@
-// Loading.js
 import React from 'react';
 
-function Loading({ message = "Fetching content, please wait..." }) {
+const SkeletonLoader = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-600">
-      <div className="flex flex-col items-center">
-        {/* Displaying the loading GIF */}
-        <img
-          src="https://loading.io/spinners/spinner/index.gif" // Replace with your desired GIF URL
-          alt="Loading..."
-          className="w-24 h-24 mb-4"
-        />
-        
-        {/* Loading Message */}
-        <p className="text-white mt-4 text-lg font-semibold text-center">{message}</p>
+    <div className="space-y-4">
+      {/* Skeleton for a header */}
+      <div className="w-full h-12 bg-gray-300 animate-pulse rounded-md"></div>
+      
+      {/* Skeleton for a post content */}
+      <div className="flex space-x-4">
+        <div className="w-12 h-12 bg-gray-300 animate-pulse rounded-full"></div>
+        <div className="flex-1 space-y-4">
+          <div className="w-3/4 h-4 bg-gray-300 animate-pulse rounded-md"></div>
+          <div className="w-1/2 h-4 bg-gray-300 animate-pulse rounded-md"></div>
+        </div>
       </div>
+
+      {/* Skeleton for a footer */}
+      <div className="w-full h-8 bg-gray-300 animate-pulse rounded-md"></div>
     </div>
   );
-}
+};
 
-export default Loading;
+export default SkeletonLoader;

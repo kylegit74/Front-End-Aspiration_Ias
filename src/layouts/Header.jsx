@@ -10,7 +10,7 @@ const Header = () => {
    {
     setTimeout(() => {
       setIsCoursesOpen(false);
-    }, 3000);
+    }, 100);
    }
 
   return (
@@ -34,7 +34,7 @@ const Header = () => {
           <div
             className="relative"
             onMouseEnter={() => setIsCoursesOpen(true)}
-            onMouseLeave={() => handleMouseLeave()}
+        
           >
             <Link to="/about" className="hover:pb_text_red font-medium">
               Courses <BiCaretDown className="inline-block" />
@@ -48,7 +48,8 @@ const Header = () => {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="absolute left-[-140px] -translate-x-[-140px] top-[40px] z-20 flex bg-white shadow-xl border rounded-lg p-4 min-w-max"
-          >
+                 onMouseEnter={()=>setIsCoursesOpen(true)} 
+                 onMouseLeave={() => handleMouseLeave()}>
             {/* Course Categories */}
                 <div className="w-48 ">
                   <h3 className="text-lg font-semibold text-gray-700 px-4 py-2 border-b">

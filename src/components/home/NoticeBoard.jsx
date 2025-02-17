@@ -6,18 +6,23 @@ import 'swiper/css/pagination';
 import { Navigation } from 'swiper/modules';
 import { BiArrowBack, BiChevronRight, BiChevronsRight, BiLeftArrow } from 'react-icons/bi';
 import FetchallNotice from '../../Services/Notice/FetchAllNotice'
+import Spinner from '../Spinner';
 
 const NoticeBoard = () => {
   const[Notices, setNotices]=useState([]);
+  const[isLoading, setIsLoading]=useState(false)
   async function fetchnotices()
   { 
     try{
+      setIsLoading(true)
       const notices=await FetchallNotice();
       console.log('notices',notices);
       setNotices(notices);
+      setIsLoading(false)
     }catch(error)
     {
       console.log('error',error);
+      setIsLoading(false)
     }
   }
   const SortedNotices = [...Notices].sort((a, b) => {
@@ -40,8 +45,7 @@ console.log('Sorted Notices:', SortedNotices);
   },[])
   return (
     <div className="flex items-center justify-center bg-gray-100 py-20 relative">
-        
-      <div className="notice-board-card pb_bg_red text-white shadow-lg p-6 rounded-3xl w-full max-w-screen-xl relative overflow-hidden">
+        {isLoading? <Spinner/>: <div className="notice-board-card pb_bg_red text-white shadow-lg p-6 rounded-3xl w-full max-w-screen-xl relative overflow-hidden">
         <h2 className="text-3xl font-bold mb-4 ml-4">Notice Board</h2>
         <span className='absolute top-20 w-full h-[2px] bg-white left-0'></span>
         <div className='pb_bg_ylw w-24 h-24 rounded-full absolute -left-20 top-24'></div>
@@ -97,7 +101,8 @@ console.log('Sorted Notices:', SortedNotices);
         <div className="swiper-button-next bg-white rounded-full hover:text-gray-900 cursor-pointer nav_none p-2">
             <BiArrowBack className='pb_text_red rotate-180' />
         </div>
-      </div>
+      </div>}
+     
     </div>
   );
 };

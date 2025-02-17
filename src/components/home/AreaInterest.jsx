@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { BiArrowBack, BiChevronRight } from "react-icons/bi";
 import FetchAllCourses from "../../Services/Course/FetchAllCourse";
+import Spinner from "../Spinner";
 
 const AreaInterest = () => {
   const [courses, setCourses] = useState([]);
+  const [isLoading, setIsLoading]=useState(false)
 
   useEffect(() => {
     async function fetchCourses() {
       try {
+        setIsLoading(true)
         const fetchedCourses = await FetchAllCourses();
         setCourses(fetchedCourses.slice(0, 5)); // Fetch only 5 courses
+        setIsLoading(false)
       } catch (error) {
         console.error("Error fetching courses:", error);
+        setIsLoading(false)
       }
     }
     fetchCourses();
@@ -27,7 +32,7 @@ const AreaInterest = () => {
           Top Ranked <span className="text-red-600">Courses</span>
         </h2>
 
-        <div className="container mx-auto px-4 space-y-12">
+{isLoading? <Spinner/>: <div className="container mx-auto px-4 space-y-12">
           {courses.map((course, index) => (
             <div
               key={course.id}
@@ -67,7 +72,8 @@ const AreaInterest = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div>}
+       
       </div>
     </div>
   );

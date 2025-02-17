@@ -8,16 +8,23 @@ import Images from '../../images/Images';
 import { Link } from 'react-router-dom';
 import FetchAllBanner from '../../Services/Banner/FetchAllBanner';
 
+import Spinner from '../Spinner';
+
 const HeroSection = () => {
   const[Banners, SetBanners]=useState([]);
+  const [isLoading, setIsLoading]=useState(false)
   async function fetchbanners()
   {
     try{
+      setIsLoading(true)
+     
       const banners=await FetchAllBanner();
       console.log('banners',banners);
       SetBanners(banners)
+      setIsLoading(false)
     }catch(error)
     {
+      setIsLoading(false)
       console.log('error',error);
     }
   }
@@ -30,7 +37,7 @@ const HeroSection = () => {
   })
   return (
   <>
-   <div className="hero-section mt-[60px]">
+   {isLoading? <Spinner/>:<div className="hero-section mt-[60px]">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={50}
@@ -47,7 +54,7 @@ const HeroSection = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </div>}
 
   </>
    

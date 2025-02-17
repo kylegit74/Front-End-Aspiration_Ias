@@ -1,17 +1,24 @@
 import './App.css';
-import AboutUs from '../src/pages/About'
-import ContactPage from '../src/pages/Contact'
-import Home from '../src/pages/Home'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import WhyChooseUs from '../src/pages/WhyChooseUs'
-import AdminRoute from './components/AdminPanel/Layouts/AdminRoute';
 
+
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { lazy, Suspense } from 'react';
+import AdminRoute from './components/AdminPanel/Layouts/AdminRoute';
 import Login from './components/Login/Login';
+
+import SkeletonLoader from './components/Loader';
+const Home=lazy(()=>import('../src/pages/Home'));
+const AboutUs=lazy(()=>import('../src/pages/About'));
+const ContactPage=lazy(()=>import('../src/pages/Contact'));
+const WhyChooseUs=lazy(()=>import('../src/pages/WhyChooseUs'));
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
+     
+        <Suspense fallback={<SkeletonLoader/>}>
+        <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<AboutUs />} />
         <Route path='/contact' element={<ContactPage/>}/>
@@ -19,6 +26,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path="/admin/*" element={<AdminRoute />} />
       </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
