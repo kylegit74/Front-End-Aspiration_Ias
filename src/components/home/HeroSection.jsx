@@ -7,18 +7,16 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import Images from "../../images/Images";
 import { Link } from "react-router-dom";
 import FetchAllBanner from "../../Services/Banner/FetchAllBanner";
-
 import Spinner from "../Spinner";
 
 const HeroSection = () => {
   const [Banners, SetBanners] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  async function fetchbanners() {
+
+  async function fetchBanners() {
     try {
       setIsLoading(true);
-
       const banners = await FetchAllBanner();
-      console.log("banners", banners);
       SetBanners(banners);
       setIsLoading(false);
     } catch (error) {
@@ -26,34 +24,33 @@ const HeroSection = () => {
       console.log("error", error);
     }
   }
+
   useEffect(() => {
-    fetchbanners();
+    fetchBanners();
   }, []);
 
-  Images.map((image) => {
-    console.log("image", image.url);
-  });
   return (
     <>
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className="hero-section mt-[60px]">
+        <div className="hero-section mt-[60px] w-full overflow-hidden">
           <Swiper
-            key={Banners.length || 0} // Ensures Swiper re-renders when data changes
+            key={Banners.length || 0}
             modules={[Navigation, Pagination, Autoplay]}
-            spaceBetween={50}
+            spaceBetween={10}
             slidesPerView={1}
-            loop={true} // Ensure loop is enabled
+            loop={true}
             navigation
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
+            className="w-full max-w-[1600px] mx-auto"
           >
             {Banners?.map((banner, index) => (
               <SwiperSlide key={index}>
                 <Link to={banner?.link}>
                   <img
-                    className="w-full max-h-[100vh] object-cover"
+                    className="w-full h-auto md:h-[70vh] object-fit"
                     src={banner.image}
                     alt={`Slide ${index + 1}`}
                   />

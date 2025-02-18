@@ -28,7 +28,7 @@ const NoticeBoard = () => {
       setIsLoading(false);
     }
   }
-  const SortedNotices = [...Notices].sort((a, b) => {
+  {/*const SortedNotices = [...Notices].sort((a, b) => {
     const dateA = new Date(a.updatedAt);
     const dateB = new Date(b.updatedAt);
 
@@ -38,9 +38,7 @@ const NoticeBoard = () => {
     }
 
     return dateB - dateA;
-  });
-
-  console.log("Sorted Notices:", SortedNotices);
+  });*/}
 
   useEffect(() => {
     fetchnotices();
@@ -69,7 +67,7 @@ const NoticeBoard = () => {
               <div className="px-4">
                 {/* <p className="text-lg font-bold mb-4">Results Declared :  </p> */}
                 <ul className="list-disc pl-5 space-y-4 text-lg mb-5 mt-3">
-                  {SortedNotices.slice(0, 5)?.map((notice, index) => (
+                  {Notices.slice(0, 5)?.map((notice, index) => (
                     <li key={index}>
                       {notice.text}
                       {index <= 2 && (
@@ -93,7 +91,7 @@ const NoticeBoard = () => {
             <SwiperSlide>
               {/* <p className="text-lg font-bold mb-4">Results Declared :  </p> */}
               <ul className="list-disc pl-5 space-y-4 text-lg mb-5">
-                {SortedNotices.slice(5, 12)?.map((notice, index) => (
+                {Notices.slice(5, 12)?.map((notice, index) => (
                   <li key={index}>{notice.text}</li>
                 ))}
               </ul>
@@ -101,7 +99,7 @@ const NoticeBoard = () => {
             <SwiperSlide>
               {/* <p className="text-lg font-bold mb-4">Results Declared :  </p> */}
               <ul className="list-disc pl-5 space-y-4 text-lg mb-5">
-                {SortedNotices.slice(12, 18)?.map((notice, index) => (
+                {Notices.slice(12, 18)?.map((notice, index) => (
                   <li key={index}>{notice.text}</li>
                 ))}
               </ul>

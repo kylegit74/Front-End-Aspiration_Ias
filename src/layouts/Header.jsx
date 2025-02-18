@@ -1,138 +1,92 @@
 import React, { useState } from "react";
-import { BiCaretDown, BiSearch } from "react-icons/bi";
+import { BiCaretDown, BiSearch, BiMenu, BiX } from "react-icons/bi";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
-  const [isTargetOpen, setIsTargetOpen] = useState(false);
-   function handleMouseLeave()
-   {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  function handleMouseLeave() {
     setTimeout(() => {
       setIsCoursesOpen(false);
     }, 100);
-   }
+  }
 
   return (
     <header className="pb_bg_ylw fixed top-0 left-0 w-full z-50 shadow-md h-16">
-      <div className="container max-w-7xl mx-auto flex justify-between items-center h-full relative">
-        
-        {/* Logo Section this is changed by sanjit */}
-        <Link className="relative z-10 min-h-full flex items-center" to={"/"}>
-          <div className="bg-red-600 text-white rounded-b-2xl pb-[-40px] px-6 py-4 text-center font-medium h-full flex flex-col justify-center">
+      <div className="container max-w-7xl mx-auto flex justify-between items-center h-full relative px-4 md:px-0">
+        {/* Logo Section */}
+        <Link className="relative z-10 flex items-center" to={"/"}>
+          <div className="bg-red-600 text-white rounded-b-2xl px-6 py-4 text-center font-medium flex flex-col justify-center">
             <span className="block text-xl pt-2">ASPIRATION</span>
-            <span className="text-sm"> JEE  &  NEET </span>
-            <span className="text-sm"> ACADEMY</span>
+            <span className="text-sm">JEE & NEET</span>
+            <span className="text-sm">ACADEMY</span>
           </div>
         </Link>
 
+        {/* Mobile Menu Toggle */}
+        <button
+          className="md:hidden text-2xl"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <BiX /> : <BiMenu />}
+        </button>
+
         {/* Navigation Bar */}
-        <nav className="hidden md:flex space-x-6 h-full items-center">
-          <Link to="/" className="hover:pb_text_red font-medium">
+        <nav
+          className={`md:flex space-x-6 h-screen items-center absolute md:relative top-16 md:top-0 left-0 w-full md:w-auto bg-white md:bg-transparent shadow-md md:shadow-none p-4 md:p-0 transition-all duration-300 ${
+            isMobileMenuOpen ? "block" : "hidden"
+          } md:flex`}
+        >
+          <Link to="/" className="hover:pb_text_red font-medium block md:inline-block">
             Home
           </Link>
-          <div
-            className="relative"
-            onMouseEnter={() => setIsCoursesOpen(true)}
-        
-          >
-            <Link to="/about" className="hover:pb_text_red font-medium">
+          <div className="relative" onMouseEnter={() => setIsCoursesOpen(true)}>
+            <Link to="/about" className="hover:pb_text_red font-medium block md:inline-block">
               Courses <BiCaretDown className="inline-block" />
             </Link>
 
             {/* Dropdown Menu */}
             {isCoursesOpen && (
-            <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-[-140px] -translate-x-[-140px] top-[40px] z-20 flex bg-white shadow-xl border rounded-lg p-4 min-w-max"
-                 onMouseEnter={()=>setIsCoursesOpen(true)} 
-                 onMouseLeave={() => handleMouseLeave()}>
-            {/* Course Categories */}
-                <div className="w-48 ">
-                  <h3 className="text-lg font-semibold text-gray-700 px-4 py-2 border-b">
-                    Course Categories
-                  </h3>
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="absolute left-0 md:left-auto top-[40px] z-20 flex flex-col md:flex-row bg-white shadow-xl border rounded-lg p-4 min-w-max"
+                onMouseLeave={handleMouseLeave}
+              >
+                <div className="w-48">
+                  <h3 className="text-lg font-semibold text-gray-700 px-4 py-2 border-b">Course Categories</h3>
                   <ul className="mt-2 space-y-1">
-                    <li>
-                      <Link to="/course-1" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">
-                        Classroom
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/course-2" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">
-                        Non-Classroom
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/course-3" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">
-                        Integrated School Programme
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/course-4" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">
-                        Online Course
-                      </Link>
-                    </li>
+                    <li><Link to="/course-1" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Classroom</Link></li>
+                    <li><Link to="/course-2" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Non-Classroom</Link></li>
+                    <li><Link to="/course-3" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Integrated School Programme</Link></li>
+                    <li><Link to="/course-4" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Online Course</Link></li>
                   </ul>
                 </div>
-
-                {/* Targeted Exams */}
                 <div className="w-48">
-                  <h3 className="text-lg font-semibold text-gray-700 px-4 py-2 border-b">
-                    Targeted Exams
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-700 px-4 py-2 border-b">Targeted Exams</h3>
                   <ul className="mt-2 space-y-1">
-                    <li>
-                      <Link to="/exam-1" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">
-                        JEE Advanced
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/exam-2" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">
-                        JEE Mains
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/exam-3" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">
-                        NEET
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/exam-4" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">
-                        Olympiads
-                      </Link>
-                    </li>
+                    <li><Link to="/exam-1" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">JEE Advanced</Link></li>
+                    <li><Link to="/exam-2" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">JEE Mains</Link></li>
+                    <li><Link to="/exam-3" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">NEET</Link></li>
+                    <li><Link to="/exam-4" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Olympiads</Link></li>
                   </ul>
                 </div>
               </motion.div>
             )}
           </div>
-
-          <Link to="/whychooseus" className="hover:pb_text_red font-medium">
-            Why Choose Us
-          </Link>
-          <Link to="/about" className="hover:pb_text_red font-medium">
-            About
-          </Link>
-          <Link to="/contact" className="hover:pb_text_red font-medium">
-            Contact
-          </Link>
-          <Link to="/contact" className="hover:pb_text_red font-medium">
-            Download
-          </Link>
-          <Link to="/contact" className="hover:pb_text_red font-medium">
-            Scholarship
-          </Link>
+          <Link to="/whychooseus" className="hover:pb_text_red font-medium block md:inline-block">Why Choose Us</Link>
+          <Link to="/about" className="hover:pb_text_red font-medium block md:inline-block">About</Link>
+          <Link to="/contact" className="hover:pb_text_red font-medium block md:inline-block">Contact</Link>
+          <Link to="/download" className="hover:pb_text_red font-medium block md:inline-block">Download</Link>
+          <Link to="/scholarship" className="hover:pb_text_red font-medium block md:inline-block">Scholarship</Link>
         </nav>
 
         {/* Buttons Section */}
-        <div className="flex space-x-4 items-center">
-          {/*<button className="pb_bg_red text-white px-6 font-medium py-2 rounded-full hover:bg-black">
-            Register for NEET
-          </button>*/}
+        <div className="hidden md:flex space-x-4 items-center">
           <button className="pb_bg_red text-white px-4 py-2 rounded-full hover:bg-black">
             <BiSearch />
           </button>

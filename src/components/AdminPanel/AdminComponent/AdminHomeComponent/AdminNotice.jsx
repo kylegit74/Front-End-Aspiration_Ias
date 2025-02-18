@@ -1,27 +1,30 @@
 import { useEffect, useState } from "react";
 import { Plus, Trash2, MessageSquare, Edit2, Save } from "lucide-react";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import FetchallNotice from "../../../../Services/Notice/FetchAllNotice";
 import Dialog from "./AdminDialog";
 import AddNotice from "../../../../Services/Notice/AddNotice";
 import DeleteNotice from "../../../../Services/Notice/DeleteNotice";
 import EditNotice from "../../../../Services/Notice/EditNotice";
-import Loading from "../../../Loader";
 import Spinner from "../../../Spinner";
+import UpdateOrder from "../../../../Services/Notice/SetNoticeOrder";
+
+
 
 function AdminNotice() {
   const [Notices, SetNotices] = useState([]);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [NewTextToAdd, SetNewTextToAdd] = useState();
+  const [NewTextToAdd, SetNewTextToAdd] = useState("");
   const [isEdit, setisEdit] = useState(false);
   const [Values, setValues] = useState({});
   const [EditIndex, setEditIndex] = useState();
-  const [IsLoading, setIsLoading]=useState(false)
+  const [IsLoading, setIsLoading] = useState(false);
 
   async function FetchNotices() {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const res = await FetchallNotice();
-      const sortedNotices = [...res].sort((a, b) => {
+    {/* const sortedNotices = [...res].sort((a, b) => {
         const DateA = new Date(a.updatedAt);
         const DateB = new Date(b.updatedAt);
         
@@ -30,18 +33,19 @@ function AdminNotice() {
         }
         return DateB - DateA;
       });
-      setIsLoading(false)
+    */}
+      setIsLoading(false);
       
       let initial = {};
-      sortedNotices.forEach((notice, index) => {
+      res.forEach((notice, index) => {
         initial[index] = notice.text;
       });
       
       setValues(initial);
-      SetNotices(sortedNotices);
+      SetNotices(res);
     } catch (error) {
       console.log("Error fetching notices:", error);
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
   
@@ -49,7 +53,7 @@ function AdminNotice() {
     try {
       await AddNotice(NewTextToAdd);
       FetchNotices();
-      SetNewTextToAdd();
+      SetNewTextToAdd("");
       setIsAddDialogOpen(false);
     } catch (error) {
       console.log("error", error);
@@ -84,67 +88,116 @@ function AdminNotice() {
     }
   }
 
+   const handleDragEnd = async(result) => {
+    if (!result.destination) return;
+
+    const items = Array.from(Notices);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+     const res=await UpdateOrder(items);
+     console.log('res order chalnge',res)
+   
+    console.log('items',items)
+    FetchNotices()
+    
+    
+    // Update the values state to match the new order
+    let newValues = {};
+    Notices.forEach((item, index) => {
+      newValues[index] = Values[Object.keys(Values).find(key => 
+        Notices[key] === item
+      )];
+    });
+    setValues(newValues);
+    console.log('notices',newValues)
+  };
+
   useEffect(() => {
     FetchNotices();
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-6">
-      <div className="max-w-9xl mx-auto bg-white p-8 rounded-2xl border border-gray-200">
+    <div className="min-h-screen bg-white  p-6"> {/* Gradient background */}
+      <div className="max-w-9xl mx-auto bg-white shadow-lg border p-8 rounded-2xl "> {/* White card with shadow */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Notice Management</h2>
-            <p className="text-gray-600 mt-2">Manage and publish important notices</p>
+            <h2 className="text-3xl font-bold text-black tracking-tight">Notice Management</h2> {/* Darker text */}
+            <p className="text-black mt-2">Manage and publish important notices</p> {/* Slightly lighter text */}
           </div>
           <button
             onClick={() => setIsAddDialogOpen(true)}
-            className="flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-8 py-3 rounded-xl hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 w-full sm:w-auto"
+            className="flex items-center justify-center gap-2 bg-yellow-400 text-gray-800 px-8 py-3 rounded-xl hover:bg-yellow-500 transition-all duration-200 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 w-full sm:w-auto font-medium" // Yellow button
           >
             <Plus className="w-5 h-5" />
             Add Notice
           </button>
         </div>
-{IsLoading? <Spinner/>:   <div className="space-y-4">
-          {Notices?.map((notice, index) => (
-            <div
-              key={index}
-              className="group relative flex flex-col sm:flex-row items-start gap-4 p-6 border rounded-xl hover:border-indigo-200 bg-white shadow-sm hover:shadow-md transition-all duration-200"
-            >
-              <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center hidden sm:flex">
-                <MessageSquare className="w-5 h-5 text-indigo-600" />
-              </div>
-              <div className="flex-1 w-full sm:w-auto">
-                <input
-                  type="text"
-                  value={Values[index]}
-                  onChange={(e) => handleValueChange(e, index)}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition-all duration-200"
-                />
-              </div>
-              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-                <button
-                  className="p-2 hover:bg-indigo-50 rounded-lg transition-colors"
+
+        {IsLoading ? (
+          <Spinner />
+        ) : (
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="notices">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="space-y-4"
                 >
-                  {isEdit && index === EditIndex && Values[index] !== notice.text ? (
-                    <Save 
-                      className="w-5 h-5 text-green-600" 
-                      onClick={() => handleSave(notice._id, index)} 
-                    />
-                  ) : (
-                    <Edit2 className="w-5 h-5 text-indigo-600" />
-                  )}
-                </button>
-                <button
-                  className="p-2 hover:bg-red-50 rounded-lg transition-colors"
-                  onClick={() => handleDelete(notice._id)}
-                >
-                  <Trash2 className="w-5 h-5 text-red-500" />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>}
-      
+                  {Notices?.map((notice, index) => (
+                    <Draggable
+                      key={notice._id}
+                      draggableId={notice._id}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={`group relative flex flex-col sm:flex-row items-start gap-4 p-6 border rounded-xl bg-gray-50 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab active:cursor-grabbing ${
+                            snapshot.isDragging ? "shadow-lg ring-2 ring-yellow-200 rotate-2" : "" // Highlight on drag
+                          }`}
+                        >
+                          <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center hidden sm:flex"> {/* Yellow icon background */}
+                            <MessageSquare className="w-5 h-5 text-yellow-600" /> {/* Yellow icon */}
+                          </div>
+                          <div className="flex-1 w-full sm:w-auto">
+                            <input
+                              type="text"
+                              value={Values[index]}
+                              onChange={(e) => handleValueChange(e, index)}
+                              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-200 focus:border-yellow-400 outline-none transition-all duration-200" // Yellow focus ring
+                            />
+                          </div>
+                          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                            <button className="p-2 hover:bg-yellow-50 rounded-lg transition-colors"> {/* Yellow hover on save/edit */}
+                              {isEdit && index === EditIndex && Values[index] !== notice.text ? (
+                                <Save
+                                  className="w-5 h-5 text-green-600"
+                                  onClick={() => handleSave(notice._id, index)}
+                                />
+                              ) : (
+                                <Edit2 className="w-5 h-5 text-yellow-600" />
+                              )}
+                            </button>
+                            <button
+                              className="p-2 hover:bg-red-100 rounded-lg transition-colors" // Red hover on delete
+                              onClick={() => handleDelete(notice._id)}
+                            >
+                              <Trash2 className="w-5 h-5 text-red-500" />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        )}
       </div>
 
       <Dialog
@@ -158,7 +211,7 @@ function AdminNotice() {
             value={NewTextToAdd}
             onChange={(e) => SetNewTextToAdd(e.target.value)}
             rows={4}
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition-all duration-200 resize-none"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-200 focus:border-yellow-400 outline-none transition-all duration-200 resize-none" // Yellow focus
           />
           <div className="flex justify-end gap-3">
             <button
@@ -168,8 +221,8 @@ function AdminNotice() {
               Cancel
             </button>
             <button
-              className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover: shadow-lg transform hover:-translate-y-0.5"
-              onClick={() => handleAdd()}
+              className="px-6 py-2.5 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5" // Yellow button
+              onClick={handleAdd}
             >
               Add Notice
             </button>
