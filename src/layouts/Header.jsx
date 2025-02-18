@@ -27,7 +27,7 @@ const Header = () => {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden text-2xl"
+          className="md:hidden text-2xl z-20"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <BiX /> : <BiMenu />}
@@ -35,7 +35,7 @@ const Header = () => {
 
         {/* Navigation Bar */}
         <nav
-          className={`md:flex space-x-6 h-screen items-center absolute md:relative top-16 md:top-0 left-0 w-full md:w-auto bg-white md:bg-transparent shadow-md md:shadow-none p-4 md:p-0 transition-all duration-300 ${
+          className={`md:flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 h-screen md:h-auto items-center absolute md:relative top-16 md:top-0 left-0 w-full md:w-auto bg-white md:bg-transparent shadow-md md:shadow-none p-4 md:p-0 transition-all duration-300 z-10 ${
             isMobileMenuOpen ? "block" : "hidden"
           } md:flex`}
         >
@@ -43,7 +43,7 @@ const Header = () => {
             Home
           </Link>
           <div className="relative" onMouseEnter={() => setIsCoursesOpen(true)}>
-            <Link to="/about" className="hover:pb_text_red font-medium block md:inline-block">
+            <Link to="/courses" className="hover:pb_text_red font-medium block md:inline-block"> {/* Added /courses path */}
               Courses <BiCaretDown className="inline-block" />
             </Link>
 
@@ -54,35 +54,35 @@ const Header = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="absolute left-0 md:left-auto top-[40px] z-20 flex flex-col md:flex-row bg-white shadow-xl border rounded-lg p-4 min-w-max"
+                className="absolute left-0 md:left-auto top-[40px] ml-[-140px] z-20 flex flex-col md:flex-row bg-white shadow-xl border rounded-lg p-4 min-w-max"
                 onMouseLeave={handleMouseLeave}
               >
                 <div className="w-48">
                   <h3 className="text-lg font-semibold text-gray-700 px-4 py-2 border-b">Course Categories</h3>
                   <ul className="mt-2 space-y-1">
-                    <li><Link to="/course-1" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Classroom</Link></li>
-                    <li><Link to="/course-2" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Non-Classroom</Link></li>
-                    <li><Link to="/course-3" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Integrated School Programme</Link></li>
-                    <li><Link to="/course-4" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Online Course</Link></li>
+                    <li><Link to="/courses/classroom" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Classroom</Link></li> {/* Added /courses prefix */}
+                    <li><Link to="/courses/non-classroom" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Non-Classroom</Link></li> {/* Added /courses prefix */}
+                    <li><Link to="/courses/integrated" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Integrated School Programme</Link></li> {/* Added /courses prefix */}
+                    <li><Link to="/courses/online" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Online Course</Link></li> {/* Added /courses prefix */}
                   </ul>
                 </div>
                 <div className="w-48">
                   <h3 className="text-lg font-semibold text-gray-700 px-4 py-2 border-b">Targeted Exams</h3>
                   <ul className="mt-2 space-y-1">
-                    <li><Link to="/exam-1" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">JEE Advanced</Link></li>
-                    <li><Link to="/exam-2" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">JEE Mains</Link></li>
-                    <li><Link to="/exam-3" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">NEET</Link></li>
-                    <li><Link to="/exam-4" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Olympiads</Link></li>
+                    <li><Link to="/exams/jee-advanced" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">JEE Advanced</Link></li> {/* Added /exams prefix */}
+                    <li><Link to="/exams/jee-mains" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">JEE Mains</Link></li> {/* Added /exams prefix */}
+                    <li><Link to="/exams/neet" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">NEET</Link></li> {/* Added /exams prefix */}
+                    <li><Link to="/exams/olympiads" className="block px-4 py-2 hover:bg-gray-100 rounded-lg">Olympiads</Link></li> {/* Added /exams prefix */}
                   </ul>
                 </div>
               </motion.div>
             )}
           </div>
-          <Link to="/whychooseus" className="hover:pb_text_red font-medium block md:inline-block">Why Choose Us</Link>
-          <Link to="/about" className="hover:pb_text_red font-medium block md:inline-block">About</Link>
-          <Link to="/contact" className="hover:pb_text_red font-medium block md:inline-block">Contact</Link>
-          <Link to="/download" className="hover:pb_text_red font-medium block md:inline-block">Download</Link>
-          <Link to="/scholarship" className="hover:pb_text_red font-medium block md:inline-block">Scholarship</Link>
+          <Link to="/whychooseus" className="hover:pb_text_red font-medium block text-[12px] lg:text-[16px]  md:inline-block">Why Choose Us</Link>
+          <Link to="/about" className="hover:pb_text_red font-medium block text-[12px] lg:text-[16px]  md:inline-block">About</Link>
+          <Link to="/contact" className="hover:pb_text_red font-medium block text-[12px] lg:text-[16px]  md:inline-block">Contact</Link>
+          <Link to="/download" className="hover:pb_text_red font-medium block text-[12px] lg:text-[16px]  md:inline-block">Download</Link>
+          <Link to="/scholarship" className="hover:pb_text_red font-medium text-[12px] lg:text-[16px] block md:inline-block">Scholarship</Link>
         </nav>
 
         {/* Buttons Section */}

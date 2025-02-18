@@ -50,7 +50,7 @@ const HeroSection = () => {
               <SwiperSlide key={index}>
                 <Link to={banner?.link}>
                   <img
-                    className="w-full h-auto md:h-[70vh] object-fit"
+                    className="w-full h-[50vh] md:h-[70vh] object-fit"
                     src={banner.image}
                     alt={`Slide ${index + 1}`}
                   />
