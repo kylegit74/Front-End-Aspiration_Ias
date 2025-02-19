@@ -112,12 +112,12 @@ const Header = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className={`md:flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 fixed md:relative top-[60px] md:top-0 left-0 w-full md:w-auto pb_bg_ylw md:bg-transparent shadow-md md:shadow-none p-4 md:p-0 z-10 h-[calc(100vh-4rem)] md:h-auto ${
+              className={`md:flex text-[18px] flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 fixed md:relative top-[60px] md:top-0 left-0 w-full md:w-auto pb_bg_ylw md:bg-transparent shadow-md md:shadow-none p-4 md:p-0 z-10 h-[calc(100vh-4rem)] md:h-auto ${
                 isMobileMenuOpen ? "block overflow-y-auto" : "hidden"
               } md:flex`}
             >
               <motion.div variants={itemVariants}>
-                <Link to="/" className="hover:pb_text_red font-medium block md:inline-block hover:scale-105 transition-transform">
+                <Link to="/" className="hover:pb_text_red text-[20px] font-medium block md:inline-block hover:scale-105 transition-transform">
                   Home
                 </Link>
               </motion.div>
@@ -130,7 +130,7 @@ const Header = () => {
               >
                 <button
                   onClick={handleCoursesClick}
-                  className="hover:pb_text_red font-medium block md:inline-block w-full text-left group"
+                  className="hover:pb_text_red  font-medium text-[20px] block md:inline-block w-full text-left group"
                 >
                   Courses 
                   <BiCaretDown className={`inline-block transition-transform duration-300 ml-1 ${isCoursesOpen ? 'rotate-180' : ''} group-hover:scale-110`} />
@@ -196,7 +196,7 @@ const Header = () => {
                 <motion.div key={item} variants={itemVariants}>
                   <Link 
                     to={`/${item.toLowerCase().replace(/\s+/g, '')}`} 
-                    className="hover:pb_text_red font-medium block text-[12px] lg:text-[16px] md:inline-block hover:scale-105 transition-transform"
+                    className="hover:pb_text_red  font-medium block text-[20px] lg:text-[16px] md:inline-block  transition-transform"
                   >
                     {item}
                   </Link>
