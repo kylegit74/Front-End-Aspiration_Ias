@@ -7,7 +7,7 @@ const Eacademy = () => {
       <div className='pb_bg_ylw'>
         <div className='container max-w-7xl px-4 mx-auto py-10 flex flex-col lg:flex-row items-center justify-between'>
           <div className='w-full lg:w-2/5 z-[10px]'>
-            <h2 className='font-bold text-4xl'>Aspiration <span className='pb_text_red'>Online Campus </span></h2>
+            <h2 className='font-bold text-2xl lg:text-4xl'>Aspiration <span className='pb_text_red'>Online Campus </span></h2>
             <p className='my-4'>Aspiration Digital Campus is an advanced online classroom program, designed to run parallel to offline batches, ensuring seamless, high-quality learning anytime, anywhere. .</p>
 
             <p className='font-medium mb-4 text-lg'>Join from anywhere & experience <span className='pb_text_red'>Aspiration Online Campus</span> pedagogy.</p>
@@ -26,11 +26,11 @@ const Eacademy = () => {
         <div className='pb_bg_ylw w-36 h-36 rounded-full absolute -left-[30px] -top-[35px] scale-110 z-[1]'></div>
 
         <div className='container max-w-7xl px-4 mx-auto py-10 flex flex-col lg:flex-row items-center justify-between relative z-[10]'>
-          <div className='text-center text-white mx-10 px-5 my-3 relative z-[10]'>
-            <h2 className='font-bold text-4xl lg:text-6xl text-white'>A MUST READ FOR ALL PARENTS</h2>
+          <div className='text-center text-white mx-6 md:mx-10 md:px-5  relative z-[10]'>
+            <h2 className='font-bold text-2xl md:text-4xl lg:text-6xl text-white'>A MUST READ FOR ALL PARENTS</h2>
             <span className='text-xs italic text-gray-900'>-A Special Message to Parents</span>
             <h5 className='font-semibold'>Dear Parents,</h5>
-            <p className='my-4'>
+            <p className='mx-3 md:mx-4 sm:my-4 text-[12px] md:text-[16px]'>
               Your child’s future is one of the most precious things in your life. As parents, you always want the best for them—whether it's education, career opportunities, or personal growth. Choosing the right coaching institute plays a crucial role in shaping their success, especially when preparing for highly competitive exams like JEE & NEET.
               <br />
               At <strong className='text-black'>Aspiration JEE & NEET Academy</strong>, we understand that your child is unique, with their own strengths, learning pace, and aspirations. That’s why we are committed to providing not just coaching, but a complete mentorship journey—one that nurtures their academic excellence, confidence, and emotional well-being.
@@ -45,7 +45,7 @@ const Eacademy = () => {
 
         {/* Bottom yellow strip adjustments */}
         <div className='pb_bg_ylw h-8 w-[97%] block z-[5] rounded-es-2xl absolute right-0 bottom-3'></div>
-        <span className='absolute left-[3%] top-0 h-[90%] w-8 block pb_bg_ylw'></span>
+        <span className='absolute left-[3%] top-0 h-[95%] md:h-[90%] w-8 block pb_bg_ylw'></span>
       </div>
 
     </>

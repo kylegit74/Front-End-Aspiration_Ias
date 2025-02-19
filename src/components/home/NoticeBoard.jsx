@@ -39,7 +39,7 @@ const NoticeBoard = () => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className="notice-board-card pb_bg_red text-white shadow-lg p-6 rounded-3xl w-full max-w-screen-xl relative overflow-hidden">
+        <div className="notice-board-card pb_bg_red text-white shadow-lg p-3 md:p-6 rounded-3xl w-full max-w-screen-xl relative overflow-hidden">
           <h2 className="text-3xl font-bold mb-4 ml-4 text-lg sm:text-xl md:text-2xl lg:text-3xl">Notice Board</h2>
           <span className="absolute top-20 w-full h-[2px] bg-white left-0"></span>
           <div className="pb_bg_ylw w-24 h-24 rounded-full absolute hidden md:block -left-20 top-24"></div>
@@ -62,7 +62,7 @@ const NoticeBoard = () => {
                     <li key={index}>
                       {notice.text}
                       {index <= 2 && (
-                        <span className="md:px-4 px-2 md:py-1 bg-gradient-to-r from-green-600 ml-2 to-green-800 rounded-full text-white font-bold shadow-md uppercase text-sm transition-all duration-300 hover:scale-105">
+                        <span className="md:px-4  text-[12px] px-2 md:py-1 bg-gradient-to-r from-green-600 ml-2 to-green-800 rounded-full text-white font-bold shadow-md uppercase text-sm transition-all duration-300 hover:scale-105">
                           New
                         </span>
                       )}

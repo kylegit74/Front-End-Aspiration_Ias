@@ -10,7 +10,7 @@ const WhyChoosUs = () => {
 
       <div className='container max-w-7xl px-4 mx-auto my-10'>
         <h4 className='text-center font-bold text-xl'>Why choose us</h4>
-        <h2 className='text-center mt-3 mb-10 text-3xl sm:text-4xl font-bold'> {/* Adjusted heading size */}
+        <h2 className='text-center mt-3 mb-10 text-2xl sm:text-4xl font-bold'> {/* Adjusted heading size */}
           Our Approach is <span className='pb_text_red'>Uniquely Different.</span>
         </h2>
         <div className="container mx-auto px-4">

@@ -3,142 +3,127 @@ import { BiCaretRight } from 'react-icons/bi'
 import { BsFacebook, BsInstagram, BsLinkedin, BsTwitterX, BsYoutube } from 'react-icons/bs'
 import { FaLocationPin } from 'react-icons/fa6'
 import { IoCall } from 'react-icons/io5'
-import { MdEmail } from 'react-icons/md'
+import { MdEmail, MdFacebook } from 'react-icons/md'
 import { Link } from 'react-router-dom'
-
 const Footer = () => {
   return (
-    <div className='pb_bg_dark relative overflow-hidden'>
-      <div className='max-w-screen-xl mx-auto pt-10'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
-          <div className='text-white'>
-            <Link className='text-right text-white text-4xl font-medium w-fit block mb-5' to={'/'}>
-              <span className='block'>Aspiration</span> 
-              <span className='text-xl block'>Academy</span>
+    <footer className="pb_bg_dark pt-8 md:pt-12 pb-4">
+      <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {/* Company Info Section */}
+          <div className="space-y-6">
+            <Link to="/" className="inline-block">
+              <h2 className="text-white">
+                <span className="block text-3xl font-medium">Aspiration</span>
+                <span className="block text-xl">Academy</span>
+              </h2>
             </Link>
 
-            <p className='text-sm my-5'>Aspiration JEE & NEET Academy is a premier coaching institute dedicated to empowering students with top-notch guidance, expert faculty, and result-driven strategies. Our meticulously designed programs, available both online and offline, ensure comprehensive preparation for JEE and NEET, helping aspirants achieve their dreams with excellence and confidence.</p>
+            <p className="text-white/80 text-sm">
+              Aspiration JEE & NEET Academy is a premier coaching institute dedicated to empowering students with top-notch guidance, expert faculty, and result-driven strategies. Our meticulously designed programs, available both online and offline, ensure comprehensive preparation for JEE and NEET, helping aspirants achieve their dreams with excellence and confidence.
+            </p>
 
-            <h5 className='mb-5'>Follow us on:</h5>
-            <div className="flex gap-5 text-4xl items-center">
-              <Link className='bg-red-700 rounded-full' to={'/'}>
-                <BsFacebook className='text-yellow-400' />
-              </Link>
-              <Link className='bg-white rounded-full' to={'/'}>
-                <BsTwitterX className='text-black p-2' />
-              </Link>
-              <Link className='bg-white rounded-full' to={'/'}>
-                <BsInstagram className='text-black p-2' />
-              </Link>
-              <Link className='bg-white rounded-full' to={'/'}>
-                <BsLinkedin className='text-black p-2' />
-              </Link>
-              <Link className='bg-white rounded-full' to={'/'}>
-                <BsYoutube className='text-black p-2' />
-              </Link>
+            <div className="space-y-4">
+              <h5 className="text-white font-medium">Follow us on:</h5>
+              <div className="flex gap-4">
+                {[
+                  { Icon: BsFacebook, bg: "bg-blue-600" },
+                  { Icon: BsTwitterX, bg: "bg-white" },
+                  { Icon: BsInstagram, bg: "bg-white" },
+                  { Icon: BsLinkedin, bg: "bg-white" },
+                  { Icon: BsYoutube, bg: "bg-white" }
+                ].map(({ Icon, bg }, index) => (
+                  <Link key={index} to="/" className={`${bg} p-2 rounded-full hover:opacity-80 transition-opacity`}>
+                    <Icon className={`text-xl ${bg === "bg-white" ? "text-black" : "text-yellow-400"}`} />
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-white/20">
+              <h4 className="text-white text-lg font-medium mb-4">Address:</h4>
+              <div className="space-y-3 text-white/80">
+                <div className="flex items-start gap-2">
+                  <FaLocationPin className="mt-1 flex-shrink-0" />
+                  <span>BC-16, Street Number 113, Action Area I, Newtown, Kolkata, West Bengal 700163</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <IoCall />
+                  <span>123 4567 890</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MdEmail />
+                  <span>demoemail@gmail.com</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <hr className='my-8 md:hidden' />
-
-          <div className='text-white'>
-            <p className='text-xl font-medium mb-4'>Address:</p>
-
-            <div className='text-white flex gap-2 items-center'>
-              <FaLocationPin /> 
-              <span>
-                BC-16, Street Number 113, Action Area I, Newtown, Kolkata,
-                West Bengal 700163
-              </span>
-            </div>
-
-            <div className='text-white flex gap-2 items-center'>
-              <IoCall /> 
-              <span>
-                123 4567 890
-              </span>
-            </div>
-
-            <div className='text-white flex gap-2 items-center'>
-              <MdEmail /> 
-              <span>
-                demoemail@gmail.com
-              </span>
-            </div>
-          </div>
-
-          <div className='w-full text-white'>
-            <h4 className='font-medium text-lg mb-3'>Popular Menus</h4>
-            <ul className='text-sm'>
-              <li className="mb-3">
-                <Link to={'/'}> <BiCaretRight className='inline-block mr-2' /> Home</Link>
-              </li>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> Courses</Link>
-              </li>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> Target exams</Link>
-              </li>
-              <li className="mb-3">
-                <Link to={'/whychooseus'}> <BiCaretRight className='inline-block mr-2' /> Why choose us</Link>
-              </li>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> Career</Link>
-              </li>
-              <li className="mb-3">
-                <Link to={'/about'}> <BiCaretRight className='inline-block mr-2' /> About</Link>
-              </li>
-              <li className="mb-3">
-                <Link to={'/contact'}> <BiCaretRight className='inline-block mr-2' /> Contact</Link>
-              </li>
+          {/* Popular Menus */}
+          <div className="text-white">
+            <h4 className="text-lg font-medium mb-4">Popular Menus</h4>
+            <ul className="space-y-2">
+              {[
+                { text: "Home", path: "/" },
+                { text: "Courses", path: "/courses" },
+                { text: "Target exams", path: "/exams" },
+                { text: "Why choose us", path: "/whychooseus" },
+                { text: "Career", path: "/career" },
+                { text: "About", path: "/about" },
+                { text: "Contact", path: "/contact" }
+              ].map(({ text, path }) => (
+                <li key={text}>
+                  <Link to={path} className="inline-flex items-center hover:text-yellow-400 transition-colors">
+                    <BiCaretRight className="mr-2" />
+                    {text}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div className='w-full text-white'>
-            <h4 className='font-medium text-lg mb-3'>Aspiration Exams</h4>
-            <ul className='text-sm'>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> Aspiration Talent Reward Exam</Link>
-              </li>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> Big Bang Edge Test</Link>
-              </li>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> DRONACHARYA (I)</Link>
-              </li>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> DRONACHARYA (II)</Link>
-              </li>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> Escape Velocity Test (EVT)</Link>
-              </li>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> JEE Advanced</Link>
-              </li>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> JEE Main</Link>
-              </li>
-              <li className="mb-3">
-                <Link> <BiCaretRight className='inline-block mr-2' /> Olympiads</Link>
-              </li>
+          {/* Aspiration Exams */}
+          <div className="text-white">
+            <h4 className="text-lg font-medium mb-4">Aspiration Exams</h4>
+            <ul className="space-y-2">
+              {[
+                "Aspiration Talent Reward Exam",
+                "Big Bang Edge Test",
+                "DRONACHARYA (I)",
+                "DRONACHARYA (II)",
+                "Escape Velocity Test (EVT)",
+                "JEE Advanced",
+                "JEE Main",
+                "Olympiads"
+              ].map((exam) => (
+                <li key={exam}>
+                  <Link to={`/exams/${exam.toLowerCase().replace(/\s+/g, "-")}`} className="inline-flex items-center hover:text-yellow-400 transition-colors">
+                    <BiCaretRight className="mr-2" />
+                    {exam}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        <hr className='mt-5' />
-
-        <div className='flex flex-col md:flex-row items-center justify-between py-1'>
-          <div className='font-bold text-white text-xs'>
-            © 2025 <Link className='pb_text_ylw' to={'/'}>Aspiration Academy</Link>. All Rights Reserved
-          </div>
-          <div className='font-bold text-white text-xs'>
-            Designed & Developed by <Link className='pb_text_ylw' target='_blank' to={'https://kyleinfotech.co.in/'}>Kyle Infotech</Link>
+        {/* Footer Bottom */}
+        <div className="mt-8 pt-4 border-t border-white/20">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-white/80 text-sm">
+            <div>
+              © 2025 <Link to="/" className="pb_text_ylw hover:underline">Aspiration Academy</Link>. All Rights Reserved
+            </div>
+            <div>
+              Designed & Developed by{" "}
+              <Link to="https://kyleinfotech.co.in/" target="_blank" className="pb_text_ylw hover:underline">
+                Kyle Infotech
+              </Link>
+            </div>
           </div>
         </div>
-
       </div>
-    </div>
-  )
-}
+    </footer>
+  );
+};
 
 export default Footer
