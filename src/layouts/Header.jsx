@@ -79,8 +79,8 @@ const Header = () => {
         {/* Logo Section */}
         <Link className="relative z-10 flex items-center" to={"/"}>
           <div className="bg-red-600 text-white rounded-b-2xl h-[60px] md:h-[80px] px-2 md:px-6 py-2 md:py-4   text-center font-medium flex flex-col justify-center">
-            <span className="block text-[12px] md:text-xl pt-1 ">ASPIRATION</span>
-            <span className="text-[10px] md:text-sm">JEE & NEET</span>
+            <span className="block text-[14px] md:text-xl pt-1 ">ASPIRATION</span>
+            <span className="text-[12px] md:text-sm">JEE & NEET</span>
             <span className=" text-[10px] md:text-sm">ACADEMY</span>
           </div>
         </Link>
@@ -112,7 +112,7 @@ const Header = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className={`md:flex text-[18px] flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 fixed md:relative top-[60px] md:top-0 left-0 w-full md:w-auto pb_bg_ylw md:bg-transparent shadow-md md:shadow-none p-4 md:p-0 z-10 h-[calc(100vh-4rem)] md:h-auto ${
+              className={`md:flex text-[18px] flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 fixed md:relative top-[62px] md:top-0 left-0 w-full md:w-auto pb_bg_ylw md:bg-transparent shadow-md md:shadow-none p-4 md:p-0 z-10 h-[calc(100vh-4rem)] md:h-auto ${
                 isMobileMenuOpen ? "block overflow-y-auto" : "hidden"
               } md:flex`}
             >
