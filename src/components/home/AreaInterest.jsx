@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BiArrowBack, BiChevronRight } from "react-icons/bi";
 import FetchAllCourses from "../../Services/Course/FetchAllCourse";
 import Spinner from "../Spinner";
+import CourseAccordion from "./Accordion";
 
 const AreaInterest = () => {
   const [courses, setCourses] = useState([]);
@@ -55,12 +56,13 @@ const AreaInterest = () => {
                   <div>
                     <h5 className="text-xl sm:text-2xl font-bold">{course.heading}</h5>
                     <p className="mt-2 text-white text-sm sm:text-base">{course.description}</p>
-                    <h4 className="font-bold mt-3 mb-2 text-base sm:text-lg">Explore Courses:</h4>
-                    <ul className="list-disc list-inside text-white text-sm">
-                      {course.Explore_Courses?.map((explore, i) => (
-                        <li key={i}>{explore}</li>
-                      ))}
+                    
+                    <ul className="list-disc list-inside text-white text-sm mt-3">
+                    
+                      <CourseAccordion course={course} />
+                     
                     </ul>
+                    
                   </div>
                   <div className="flex flex-col sm:flex-row gap-4 mt-4">
                     <button className="bg-white text-red-500 rounded-full px-3 py-2 sm:px-4 sm:py-2 flex-grow sm:flex-grow-0 flex items-center justify-center font-medium text-sm sm:text-base w-full sm:w-auto">

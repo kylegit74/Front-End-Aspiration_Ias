@@ -5,6 +5,7 @@ import { FaLocationPin } from 'react-icons/fa6'
 import { IoCall } from 'react-icons/io5'
 import { MdEmail, MdFacebook } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import MenuAccordion from '../components/home/PopularMenuAccordion'
 const Footer = () => {
   return (
     <footer className="pb_bg_dark pt-8 md:pt-12 pb-4">
@@ -60,7 +61,7 @@ const Footer = () => {
           </div>
 
           {/* Popular Menus */}
-          <div className="text-white">
+         {/* <div className="text-white">
             <h4 className="text-lg font-medium mb-4">Popular Menus</h4>
             <ul className="space-y-2">
               {[
@@ -80,7 +81,8 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div>*/}
+          <MenuAccordion/>
 
           {/* Aspiration Exams */}
           <div className="text-white">
