@@ -41,6 +41,7 @@ const HeroSection = () => {
             spaceBetween={10}
             slidesPerView={1}
             loop={true}
+            
             navigation
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
@@ -50,7 +51,7 @@ const HeroSection = () => {
               <SwiperSlide key={index}>
                 <Link to={banner?.link}>
                   <img
-                    className="w-full h-[30vh] sm:h-[40vh] md:h-[50vh] lg:h-[90vh] object-fit"
+                    className="w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[90vh] object-cover"
                     src={banner.image}
                     alt={`Slide ${index + 1}`}
                   />

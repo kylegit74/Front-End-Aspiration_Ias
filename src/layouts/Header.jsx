@@ -78,7 +78,7 @@ const Header = () => {
       <div className="container max-w-7xl mx-auto flex justify-between items-center h-full relative px-4 md:px-0">
         {/* Logo Section */}
         <Link className="relative z-10 flex items-center" to={"/"}>
-          <div className="bg-red-600 text-white rounded-b-2xl px-2 md:px-6 py-2 md:py-4 text-center font-medium flex flex-col justify-center">
+          <div className="bg-red-600 text-white rounded-b-2xl px-2 md:px-6 md:py-2   text-center font-medium flex flex-col justify-center">
             <span className="block text-xl pt-2">ASPIRATION</span>
             <span className="text-sm">JEE & NEET</span>
             <span className="text-sm">ACADEMY</span>

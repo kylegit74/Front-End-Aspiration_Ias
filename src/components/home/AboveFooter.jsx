@@ -18,7 +18,7 @@ import { TfiQuoteLeft, TfiQuoteRight } from "react-icons/tfi";
 
 function AboveFooter() {
   return (
-    <div className="mt-20 relative">
+    <div className=" mt-5 md:mt-10 lg:mt-20 relative">
       {/* First Section - What Aspiration Does */}
       <div className="pb_bg_dark max-w-screen-xl max-h-[200vh] mx-auto rounded-s-3xl p-4 sm:p-8">
         {/* Keeping the first section exactly as is */}
