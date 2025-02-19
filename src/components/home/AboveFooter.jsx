@@ -84,7 +84,7 @@ function AboveFooter() {
 
       {/* Merger Announcement Section - Updated for better responsiveness */}
       <div className="max-w-screen-xl mx-auto p-4 sm:p-8 bg-white border-r-4 border-b-4 rounded-ee-3xl border-dashed border-[var(--pb-ylw)] relative shadow-lg">
-        <div className="flex flex-col md:flex-row gap-8 items-center">
+        <div className="flex flex-col md:flex-row gap-2 md:gap-8 items-center">
           {/* Left Company Logo */}
           <div className="w-full md:w-1/4 flex justify-center">
             <img
@@ -97,17 +97,15 @@ function AboveFooter() {
           {/* Center Content */}
           <div className="w-full md:w-1/2 flex flex-col items-center md:items-start">
             <div className="text-center md:text-left w-full mb-6">
-              <Quote className="w-8 h-8 text-yellow-500 mx-auto md:mx-0 mb-2" />
-              <h3 className="font-bold text-2xl md:text-3xl lg:text-4xl text-gray-800 leading-tight mb-4">
-                Two Leaders, <span className="pb_text_red">One Vision</span>
-              </h3>
+             
+            
             </div>
             
-            <p className="text-base text-gray-700 leading-relaxed mb-6 text-center md:text-left">
+            <p className="text-base text-gray-700 leading-relaxed mb-6 text-center text-[8px] lg:text-[16px] md:text-left">
             With Aspiration IAS Academy as our foundation, we have built Aspiration JEE & NEET Academy to provide exceptional coaching for students aspiring to clear JEE and NEET. Our experienced faculty, who have guided numerous Civil Services aspirants to success, now bring their expertise to help JEE and NEET students achieve their goals. By combining a rigorous curriculum, personalized attention, and practical exam strategies, we ensure our students are equipped for success. Our online and offline learning modes cater to a diverse range of students, helping them prepare efficiently for these exams.
             </p>
 
-            <div className="flex justify-center md:justify-start w-full">
+            <div className="flex justify-center ml-[-10px] w-full">
               <Link 
                 className="flex items-center gap-2 font-bold text-lg text-red-600 hover:text-red-800 transition duration-300 group" 
                 to="/"
@@ -122,8 +120,8 @@ function AboveFooter() {
           <div className="w-full md:w-1/4 flex justify-center">
             <img
               className="rounded-se-3xl w-full max-w-[200px] md:max-w-[250px] object-cover"
-              src={logo}
-              alt="Company Logo 2"
+              src={prevlogo}
+              alt="Company Logo 1"
             />
           </div>
         </div>
@@ -132,14 +130,11 @@ function AboveFooter() {
       {/* Quote Section */}
       <div className="pb_bg_red mt-8 sm:mt-[75px] relative py-6 sm:py-10">
         <div className="max-w-screen-xl mx-auto">
-          <div className="text-white text-lg sm:text-2xl font-medium text-center px-4">
-            <p>
-              <TfiQuoteLeft className="inline-block text-2xl sm:text-3xl mr-1" />
-              Success in JEE and NEET is a journey of persistence and hard work.
-              Every challenge faced today will prepare you for the victory
-              tomorrow. Stay focused, remain positive, and keep pushing your
-              limits to achieve your dreams.
-              <TfiQuoteRight className="inline-block text-2xl sm:text-3xl ml-1" />
+          <div className="text-white text-lg sm:text-1xl font-medium text-center px-4">
+            <p className='space-2'>
+              <TfiQuoteLeft className="inline-block text-2xl sm:text-3xl mr-4" />
+              Success in JEE and NEET is a journey of persistence and hard work. Every challenge faced today will prepare you for the victory tomorrow. Stay focused, remain positive, and keep pushing your limits to achieve your dreams
+              <TfiQuoteRight className="inline-block text-2xl sm:text-3xl  ml-4" />
             </p>
 
             <h4 className="mt-2 sm:mt-4 mb-1 sm:mb-2 text-base sm:text-xl">
