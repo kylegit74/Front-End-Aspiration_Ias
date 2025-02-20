@@ -26,7 +26,7 @@ const CourseAccordion = ({ course }) => {
     className="bg-red-500 text-white p-4 sm:p-6 transition-all duration-500 ease-in-out overflow-hidden opacity-0 scale-y-0 origin-top"
     style={{ opacity: isOpen ? 1 : 0, transform: isOpen ? "scaleY(1)" : "scaleY(0)" }}
   >
-    <ul className="list-disc list-inside text-black text-sm transition-all duration-500 ease-in-out overflow-hidden opacity-0 scale-y-0 origin-top"  style={{ opacity: isOpen ? 1 : 0, transform: isOpen ? "scaleY(1)" : "scaleY(0)" }}>
+    <ul className="list-disc list-inside text-white text-sm transition-all duration-500 ease-in-out overflow-hidden opacity-0 scale-y-0 origin-top"  style={{ opacity: isOpen ? 1 : 0, transform: isOpen ? "scaleY(1)" : "scaleY(0)" }}>
       {course.Explore_Courses?.map((explore, i) => (
         <li key={i}>{explore}</li>
       ))}
