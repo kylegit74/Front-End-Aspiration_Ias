@@ -7,12 +7,12 @@ const ExamMenu = () => {
 
   const menuItems = [
     { text: "Aspiration Talent Reward Exam", path: "/" },
-    { text: "Big Bang Edge Test", path: "/courses" },
-    { text: "DRONACHARYA (I)", path: "/exams" },
-    { text: "DRONACHARYA (II)", path: "/whychooseus" },
-    { text: "Escape Velocity Test (EVT)", path: "/career" },
-    { text: "JEE Advanced", path: "/about" },
-    { text: "JEE Main", path: "/contact" },
+    { text: "Big Bang Edge Test", path: "/" },
+    { text: "DRONACHARYA (I)", path: "/" },
+    { text: "DRONACHARYA (II)", path: "/" },
+    { text: "Escape Velocity Test (EVT)", path: "/" },
+    { text: "JEE Advanced", path: "/" },
+    { text: "JEE Main", path: "/" },
     {text:"Olympiads", path:"/"}
   ];
   
